@@ -1,0 +1,388 @@
+{% extends "ThemesBundle:Adminlte/Template:1_template.html.twig" %}
+
+{% import "TreeBundle::Macro/tree_sales.html.twig" as macro %}
+
+{% block bodyclass %}{% spaceless %}
+    {{ vars.body_css }}
+{% endspaceless %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        input[type=radio] {
+            height: 20px;
+            width: 20px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        {#<h1>#}
+            {#<i class="fa fa-fw fa-money"></i> Cotizaci&oacute;n#}
+            {#<small>config</small>#}
+        {#</h1>#}
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{ path('backend_dashboard_index') }}">
+                    <i class="fa fa-dashboard"></i> Home
+                </a>
+            </li>
+            <li class="active">
+                settings
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="info-box bg-light-blue-active">
+                    <span class="info-box-icon">
+                        <i class="fa fa-file-text"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"></span>
+                        <span class="info-box-number">
+                            Registrar solicitud
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                        <span class="progress-description">
+                            config
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="box box-solid">
+                    <div class="box-body"> {#no-padding#}
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-4 control-label">
+                                        Nro solicitud
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text"
+                                               class="form-control"
+                                               readonly
+                                               value="34567876"
+                                               id="inputEmail3"
+                                               placeholder="###">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-md-offset-2">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-6 control-label">
+                                        Fecha documento
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <div class="external-event bg-green text-center">
+                                            <i class="fa fa-fw fa-calendar"></i> 10/15/2019
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="box box-primary box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            Agregar usuario
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Fecha de nacimiento</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Sexo</label>
+                                    <select class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Fumador</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="radio" name="smoker"> Si
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="radio" name="smoker"> No
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">
+                            <i class="fa fa-fw fa-user"></i> Lista de usuarios
+                        </h4>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <div class="box-body"> {#no-padding#}
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Sexo</th>
+                                        <th>Nombres y Apellidos</th>
+                                        <th>Programa</th>
+                                        <th>Fuma</th>
+                                        <th><i class="fa fa-fw fa-calendar"></i> Fecha inicio</th>
+                                        <th>Categoria</th>
+                                        <th>Tipo doc.</th>
+                                        <th>Numero doc.</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>
+                                                <span class="badge bg-light-blue">
+                                                    <i class="fa fa-fw fa-mars"></i> M
+                                                </span>
+                                            </td>
+                                            <td>William vargas</td>
+                                            <td>Oncoplus</td>
+                                            <td>No</td>
+                                            <td class="text-center">
+                                                <span class="label label-primary">
+                                                    10/16/2019
+                                                </span>
+                                            </td>
+                                            <td>Titular</td>
+                                            <td>DNI</td>
+                                            <td>645454545</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>
+                                                <span class="badge bg-red">
+                                                    <i class="fa fa-fw fa-venus"></i> F
+                                                </span>
+                                            </td>
+                                            <td>Emely Trujillo</td>
+                                            <td>Oncoplus</td>
+                                            <td>No</td>
+                                            <td class="text-center">
+                                                <span class="label label-primary">
+                                                    17/09/2019
+                                                </span>
+                                            </td>
+                                            <td>Conyuge</td>
+                                            <td>DNI</td>
+                                            <td>90898989</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="box box-primary box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            Agenda del titular
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Fecha de nacimiento</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Sexo</label>
+                                    <select class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Fumador</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="radio" name="smoker"> Si
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="radio" name="smoker"> No
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        {#<h4 class="box-title"></h4>#}
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <div class="box-body"> {#no-padding#}
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="{{ path('backend_cotizacion_resultado') }}" class="btn btn-danger btn-lg">
+                                    <i class="fa fa-fw fa-arrow-left"></i> Volver
+                                </a>
+                                <a href="{{ path('backend_cotizacion_aportante') }}" class="btn btn-primary btn-lg pull-right">
+                                    Siguiente <i class="fa fa-fw fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    {#
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form._token) }}
+
+        <div class="form-group">
+            <i class="fa fa-fw fa-code-fork"></i>
+            <label class="" for="product_size">Modalidad</label>
+            <div class="row">
+                {% for key, val in form.modalidad.vars.choices %}
+                    <div class="col-md-3">
+                        <input
+                                type="radio"
+                                id="product_modalidad_{{ key }}"
+                                name="product[modalidad]"
+                                required="required"
+
+                                {% if form.modalidad.vars.data == val.value %}
+                                    checked="checked"
+                                {% endif %}
+
+                                value="{{ val.value }}">
+                        <label for="product_gender_{{ key }}" class="required x-hand" style="margin-left: 5px">{{ val.label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+
+        {{ form_widget(form) }}
+
+        {{ form_widget(form.submit) }}
+
+        {{ form_end(form) }}
+    #}
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

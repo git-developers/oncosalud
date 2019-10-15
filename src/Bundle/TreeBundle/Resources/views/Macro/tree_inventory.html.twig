@@ -1,0 +1,37 @@
+{% macro tree(objects, tree, modal, index, pdvId, categoryId) %}
+
+    {% for key, value in objects %}
+
+        {% if loop.index0 == 0 %}
+            {% set index = index + 1 %}
+        {% endif %}
+
+        {% set entityParent = value.parent %}
+
+        {% if entityParent is not empty %}
+            <li
+                class="x-hand"
+                data-id="{{ entityParent.id }}"
+                id="li-{{ entityParent.id }}">
+
+                {{ include("TreeBundle::Template/li_inventory.html.twig", {
+                        entity: entityParent,
+                        modal: modal,
+                        badge_color: index|badge_colors(),
+                        route_path: "backend_product_index",
+                        pdv_id: pdvId,
+                        category_id: categoryId
+                    })
+                }}
+
+                <ul class="{{ tree.child_ul ~ entityParent.id }}">
+                    {% import _self as macro %}
+                    {{ macro.tree(value.children, tree, modal, index, pdvId, categoryId) }}
+                </ul>
+
+            </li>
+        {% endif %}
+
+    {% endfor %}
+{% endmacro %}
+

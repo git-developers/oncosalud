@@ -1,0 +1,174 @@
+Bundle\ProductBundle\Entity\Product:
+    type: entity
+#    type: mappedSuperclass
+#    mappedSuperclass: Component\CRUDDUMMY\Model\CRUDDUMMY
+    table: product
+    repositoryClass: Bundle\ProductBundle\Doctrine\ORM\ProductRepository
+    indexes:
+        fk_product_category1_idx:
+            columns:
+                - category_id
+        fk_product_color1_idx:
+            columns:
+                - color_id
+    uniqueConstraints:
+        barcode_UNIQUE:
+            columns:
+                - barcode
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        code:
+            type: string
+            nullable: true
+            length: 7
+            options:
+                fixed: false
+        gender:
+            type: integer
+            nullable: true
+            length: 1
+            options:
+                fixed: false
+            column: gender
+        name:
+            type: string
+            nullable: false
+            length: 150
+            options:
+                fixed: false
+            column: name
+        slug:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+        price:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: price
+        cost:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: cost
+        name:
+            type: string
+            nullable: false
+            length: 150
+            options:
+                fixed: false
+            column: name
+        slug:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+        reference:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+            column: reference
+        barcode:
+            type: string
+            nullable: true
+            length: 20
+            options:
+                fixed: false
+            column: barcode
+        size:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                unsigned: false
+            column: size
+        sizeRange:
+            type: string
+            nullable: true
+            length: 10
+            options:
+                unsigned: false
+            column: size_range
+        createdAt:
+            type: datetime
+            nullable: false
+            column: created_at
+#            gedmo:
+#                timestampable:
+#                    on: create
+        userCreate:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: user_create
+        updatedAt:
+            type: datetime
+            nullable: true
+            column: updated_at
+        userUpdate:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: user_update
+        isActive:
+            type: boolean
+            nullable: true
+            options:
+                default: '1'
+            column: is_active
+    manyToOne:
+        category:
+            targetEntity: Bundle\CategoryBundle\Entity\Category
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        unit:
+            targetEntity: Bundle\ProductBundle\Entity\Unit
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                unit_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        color:
+            targetEntity: Bundle\ProductBundle\Entity\Color
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                color_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
+#    lifecycleCallbacks:
+#        prePersist: [ doStuffOnPrePersist, doOtherStuffOnPrePersistToo ]
+#        postPersist: [ doStuffOnPostPersist ]

@@ -1,0 +1,297 @@
+{% extends "ThemesBundle:Adminlte/Template:1_template.html.twig" %}
+
+{% block bodyclass %}{% spaceless %}
+    {{ vars.body_css }}
+{% endspaceless %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets
+        filter='cssrewrite'
+        '@GridBundle/Resources/public/common/css/switch.css'
+        '@GridBundle/Resources/public/common/css/datatable.css'
+        '@GridBundle/Resources/public/plugins/datatables/dataTables.bootstrap.css'
+        '@GridBundle/Resources/public/plugins/datatables/extensions/Editor/css/editor.dataTables.min.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+
+    <style type="text/css">
+        {% include 'GridBundle::style.css.twig' %}
+    </style>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@GridBundle/Resources/public/common/js/formEdit.js'
+        '@GridBundle/Resources/public/common/js/formView.js'
+        '@GridBundle/Resources/public/common/js/formInfo.js'
+        '@GridBundle/Resources/public/common/js/formCreatePdvChild.js'
+        '@GridBundle/Resources/public/common/js/formDelete.js'
+        '@GridBundle/Resources/public/common/js/formWatch.js'
+        '@GridBundle/Resources/public/common/js/formViewProfile.js'
+        '@GridBundle/Resources/public/plugins/datatables/jquery.dataTables.min.js'
+        '@GridBundle/Resources/public/plugins/datatables/dataTables.bootstrap.min.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {#
+    "bLengthChange": false,
+    "bFilter": false,
+    "bSort": true,
+    "bInfo": true,
+    "bAutoWidth": false,
+    #}
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            $(document).on('click', '.copy-to-clipboard', function() {
+                $('.copy-to-clipboard-text').select();
+                document.execCommand("copy");
+            });
+
+            var dataTableObject = $('#{{ dataTable.tableOptions.table_name }}').DataTable({
+                {% for key, value in dataTable.options %}
+                '{{ key }}': {{ value|raw }},
+                {% endfor %}
+                'data': {{ dataTable.data|raw }},
+                'oSearch': {'sSearch': '{{ q|default() }}'},
+                'language': {
+                    'url': '{{ asset('bundles/grid/plugins/datatables/extensions/Language/spanish.json') }}'
+                },
+                'columns': [
+
+                    {% for key, value in grid.data_table.columns|default([]) %}
+                    {
+                        'data' : function (obj) {
+
+                            if({{ value.obj|raw }} != null){
+
+                                {% set obj = value.obj %}
+                                {% set property = value.options.property|default() %}
+
+                                {% if property %}
+                                {{ property|raw }} {# ESTO SE USA PARA MOSTRAR CODIGO DIRECTAMENTE #}
+                                {% else %}
+                                return {{ obj|raw }};
+                                {% endif %}
+                            }
+
+                            return '';
+                        },
+                    },
+                    {% endfor %}
+
+
+                    {# ********* TABLE BUTTON ********* #}
+                    {% if dataTable.tableButton is not empty %}
+                    {
+                        'data' : function (obj) {
+                            return '{% spaceless %}
+                            {% for key, button in dataTable.tableButton %}
+                            {{ tianos_grid_render_button(button, '@Ui/Grid/Button/Header/_table_button.html.twig') }}
+                            {% endfor %}
+                            {% endspaceless %}';
+                        }
+                    },
+                    {% endif %}
+                    {# ********* TABLE BUTTON ********* #}
+
+                ],
+                'columnDefs': [
+                    {% for key, value in grid.data_table.columns|default([]) %}
+
+                    {% set defs = value.defs %}
+
+                    {
+                        'targets': {{ defs.targets|default() is empty ? "" : defs.targets }},
+                        'searchable': {{ defs.searchable|default(1) }},
+                        {#'sorting': {{ defs.sorting|default(1) }},#}
+                        'orderable': {{ defs.orderable|default(1) }},
+                        'type': '{{ defs.type|default("html") }}',
+                        'width': '{{ defs.width|default("") }}',
+                        'title': '{{ defs.title|default() is empty ? "" : defs.title|raw }}',
+                        visible: {{ defs.visible|default(true) }},
+                        className: '{{ defs.className|default("") }}',
+                        'render': function (row, type, val, meta) {
+                            return row;
+
+                            {#return type === 'display' && data.length > 40 ? '<span title="'+data+'">'+data.substr( 0, 38 )+'...</span>' : data;#}
+                        },
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                            {% if defs.className|default() is not empty and modal.view_id in defs.className %}
+                            $(td).attr('title', 'ver');
+                            $(td).attr('data-toggle', 'modal');
+                            $(td).attr('data-target', '#{{ modal.view_id }}');
+                            {% elseif defs.className|default() is not empty and modal.edit_id in defs.className %}
+                            $(td).attr('title', 'editar');
+                            $(td).attr('data-toggle', 'modal');
+                            $(td).attr('data-target', '#{{ modal.edit_id }}');
+                            {% elseif defs.className|default() is not empty and modal.delete_id in defs.className %}
+                            $(td).attr('title', 'eliminar');
+                            $(td).attr('data-toggle', 'modal');
+                            $(td).attr('data-target', '#{{ modal.delete_id }}');
+                            {% elseif defs.className|default() is not empty and modal.profile_id in defs.className %}
+                            $(td).attr('title', 'ver perfil');
+                            {% elseif defs.className|default() is not empty and modal.change_password_id in defs.className %}
+                            $(td).attr('title', 'cambiar password');
+                            $(td).attr('data-toggle', 'modal');
+                            $(td).attr('data-target', '#{{ modal.change_password_id }}');
+                            {% elseif defs.className|default() is not empty and modal.point_of_sale_cog in defs.className %}
+                            $(td).attr('title', 'configurar punto de venta');
+                            $(td).attr('data-toggle', 'modal');
+                            $(td).attr('data-target', '#{{ modal.point_of_sale_cog }}');
+                            {% endif %}
+                        }
+                    },
+                    {% endfor %}
+                ],
+                'fnRowCallback': function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+                    {% for key, nRow in dataTable.rowCallBack %}
+                    $(nRow).attr('{{ nRow.key|trim|raw }}', {{ nRow.value|trim|raw }});
+                    {% endfor %}
+
+                    $(nRow).attr('class', '{{ dataTable.tableOptions.table_tr_class }}');
+
+                    return nRow;
+                }
+            });
+
+
+            {# ********* SEARCH FILTERS ********* #}
+            {% set filterIndexes = [] %}
+            {% for key, value in grid.data_table.columns|default([]) %}
+            {% if value.defs.filter|default(0) %}
+            {% set filterIndexes = filterIndexes|merge([value.defs.targets|default()]) %}
+            {% endif %}
+            {% endfor %}
+
+            $('#{{ dataTable.tableOptions.table_name }} thead tr').clone(true).appendTo( '#{{ dataTable.tableOptions.table_name }} thead' );
+            $('#{{ dataTable.tableOptions.table_name }} thead tr:eq(1) th').each( function (i) {
+
+                if ($.inArray(i, {{ filterIndexes|json_encode|raw }}) == -1) {
+                    return;
+                }
+
+                $(this).html( '<input type="text" class="form-control input-sm width-100" />' );
+
+                $('input', this ).on( 'keyup change', function () {
+                    if(dataTableObject.column(i).search() === this.value){
+                        return;
+                    }
+
+                    dataTableObject
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                });
+            });
+            {# ********* SEARCH FILTERS ********* #}
+
+            {{ tianos_grid_form_js(vars, modal, form_mapper, dataTable, '@Ui/Grid/FormJs/default.html.twig') }}
+
+        });
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ application_google_api_key }}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-{{ grid.icon }}"></i> {{ grid.title|raw }}
+            <small>grid</small>
+        </h1>
+        <ol class="breadcrumb">
+            {#<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>#}
+            {#<li class="active">Dashboard</li>#}
+
+            {% for key, button in dataTable.tableHeaderButton %}
+                <li>
+                    {{ tianos_grid_render_button(button, '@Ui/Grid/Button/Header/_table_header_button.html.twig') }}
+                </li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                {{ include('PointofsaleBundle:BackendPointofsale:sidebar-left.html.twig') }}
+            </div>
+
+            <div class="col-md-9 table-responsive" style="padding-left: 0">
+
+                <div class="box box-{{ vars.box_class }}">
+
+                    <div class="box-body">
+                        <table id="{{ dataTable.tableOptions.table_name }}"
+                               class="table table-bordered table-striped dataTable"
+                               role="grid"
+                               aria-describedby="example1_info">
+                            <thead>
+                            <tr>
+                                {% for key, value in dataTable.columns|default([]) %}
+                                    <th class="text-center">
+                                        {% if value.options.icon is defined %}
+                                            <i class="fa fa-fw fa-{{ value.options.icon|raw }}"></i>
+                                        {% endif %}
+                                        {#{{ value.name|raw }}#}
+                                    </th>
+                                {% endfor %}
+
+                                {% if dataTable.tableButton is not empty %}
+                                    <th>&nbsp</th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                {% for key, value in dataTable.columns|default([]) %}
+
+                                    {% set defs = value.defs %}
+
+                                    <th class="text-center">
+                                        {% if value.options.icon is defined %}
+                                            <i class="fa fa-fw fa-{{ value.options.icon|raw }}"></i>
+                                        {% endif %}
+                                        {{ defs.title|raw }}
+                                    </th>
+                                {% endfor %}
+
+                                {% if dataTable.tableButton is not empty %}
+                                    <th>&nbsp</th>
+                                {% endif %}
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    {{ include('GridBundle:Modal:create.html.twig') }}
+    {{ include('GridBundle:Modal:edit.html.twig') }}
+    {{ include('GridBundle:Modal:delete.html.twig') }}
+    {{ include('GridBundle:Modal:view.html.twig') }}
+    {{ include('GridBundle:Modal:info.html.twig') }}
+
+{% endblock %}

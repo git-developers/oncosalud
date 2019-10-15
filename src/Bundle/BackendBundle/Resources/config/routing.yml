@@ -1,0 +1,90 @@
+backend_dashboard:
+    resource: '@BackendBundle/Resources/config/routing/dashboard.yml'
+    prefix: /
+backend_security:
+    resource: '@UserBundle/Resources/config/routing/security.yml'
+    prefix: /security
+backend_profile:
+    resource: '@ProfileBundle/Resources/config/routing/backend.yml'
+    prefix: /profile
+backend_role:
+    resource: '@RoleBundle/Resources/config/routing/backend.yml'
+    prefix: /role
+backend_category:
+    resource: '@CategoryBundle/Resources/config/routing/tree.yml'
+    prefix: /category
+backend_product:
+    resource: '@ProductBundle/Resources/config/routing/backend.yml'
+    prefix: /product
+backend_services:
+    resource: '@ServicesBundle/Resources/config/routing/backend.yml'
+    prefix: /services
+backend_paymenttype:
+    resource: '@TicketBundle/Resources/config/routing/payment_type.yml'
+    prefix: /payment-type
+
+backend_pointofsale:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend.yml'
+    prefix: /point-of-sale
+backend_pointofsale_map:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend_map.yml'
+    prefix: /point-of-sale/map
+backend_pointofsale_per_user:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend_per_user.yml'
+    prefix: /point-of-sale/per-user
+backend_pointofsale_add_user:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend_add_user.yml'
+    prefix: /point-of-sale/add-user
+backend_pointofsale_pdv_child:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend_pdv_child.yml'
+    prefix: /point-of-sale/child
+backend_pointofsale_opening:
+    resource: '@PointofsaleBundle/Resources/config/routing/backend_opening.yml'
+    prefix: /point-of-sale/opening
+
+backend_session:
+    resource: '@SessionBundle/Resources/config/routing/backend.yml'
+    prefix: /session
+backend_user:
+    resource: '@UserBundle/Resources/config/routing/backend.yml'
+    prefix: /user
+backend_user_client:
+    resource: '@UserBundle/Resources/config/routing/backend_client.yml'
+    prefix: /user-client
+backend_user_employee:
+    resource: '@UserBundle/Resources/config/routing/backend_employee.yml'
+    prefix: /user-employee
+backend_user_setting:
+    resource: '@UserBundle/Resources/config/routing/backend_setting.yml'
+    prefix: /user-setting
+backend_settings:
+    resource: '@SettingsBundle/Resources/config/routing/backend.yml'
+    prefix: /settings
+backend_files:
+    resource: '@FilesBundle/Resources/config/routing/backend.yml'
+    prefix: /files
+
+backend_color:
+    resource: '@ProductBundle/Resources/config/routing/color.yml'
+    prefix: /color
+backend_ticket:
+    resource: '@TicketBundle/Resources/config/routing/backend.yml'
+    prefix: /ticket
+backend_sales:
+    resource: '@TicketBundle/Resources/config/routing/sales.yml'
+    prefix: /sales
+backend_orders:
+    resource: '@TicketBundle/Resources/config/routing/orders.yml'
+    prefix: /orders
+backend_payment_history:
+    resource: '@TicketBundle/Resources/config/routing/payment_history.yml'
+    prefix: /payment-history
+backend_report:
+    resource: '@ReportBundle/Resources/config/routing/report.yml'
+    prefix: /report
+backend_statistics:
+    resource: '@ReportBundle/Resources/config/routing/statistics.yml'
+    prefix: /statistics
+backend_cotizacion:
+    resource: '@UserBundle/Resources/config/routing/cotizacion.yml'
+    prefix: /cotizacion

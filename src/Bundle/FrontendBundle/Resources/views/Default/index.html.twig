@@ -1,0 +1,48 @@
+{% extends "ThemesBundle:Default:template.html.twig" %}
+
+{#https://demo.themedelights.com/Wordpress/WP01/WP005#}
+
+{% block bodyclass %}{% spaceless %}
+    {{ vars.body_css }}
+{% endspaceless %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="content" style="background-color: white; height: 1200px">
+
+        <div class="row" style="padding: 5px 0 15px 0">
+            <div align="center" class="col-lg-12 col-xs-12">
+                <a href="{{ path("backend_dashboard_index") }}" class="btn btn-success">
+                    Backend Acceso
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-xs-12" align="center">
+                <img src="{{ asset('bundles/themes/default/images/bg.png') }}" alt="" />
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}

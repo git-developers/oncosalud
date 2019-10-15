@@ -1,0 +1,134 @@
+Bundle\TicketBundle\Entity\PaymentHistory:
+    type: entity
+    table: payment_history
+    repositoryClass: Bundle\TicketBundle\Doctrine\ORM\PaymentHistoryRepository
+    indexes:
+        fk_payment_history_sales1_idx:
+            columns:
+                - sales_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: true
+            length: 45
+            options:
+                fixed: false
+            column: name
+        subTotal:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: sub_total
+        discount:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: discount
+        total:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: total
+        payment:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: payment
+        changeBack:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: change_back
+        paymentCollected:
+            type: float
+            nullable: true
+            precision: 8
+            scale: 2
+            options:
+                fixed: false
+            column: payment_collected
+        receivedDate:
+            type: datetime
+            nullable: false
+            column: received_date
+        slug:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+        createdAt:
+            type: datetime
+            nullable: false
+            column: created_at
+#            gedmo:
+#                timestampable:
+#                    on: create
+        userCreate:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: user_create
+        updatedAt:
+            type: datetime
+            nullable: true
+            column: updated_at
+        userUpdate:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: user_update
+        isActive:
+            type: boolean
+            nullable: true
+            options:
+                default: '1'
+            column: is_active
+    manyToOne:
+        sales:
+            targetEntity: Bundle\TicketBundle\Entity\Sales
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sales_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        paymentType:
+            targetEntity: Bundle\TicketBundle\Entity\PaymentType
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                payment_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,104 @@
+backend_cotizacion_cotizacion:
+    path: /cotizacion
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.cotizacion:cotizacionAction
+        _tianos:
+            action: create
+            template: UserBundle:Cotizacion:cotizacion.html.twig
+            entity: Bundle\UserBundle\Entity\Cotizacion
+            roles_granted:
+                - ROLE_USER_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\CotizacionType
+            vars:
+                subheader: sylius.ui.manage_your_user_catalog
+                icon: cube
+                body_css: grid-body-css
+            repository:
+                vars:
+                    serialize_group_name: crud
+
+backend_cotizacion_resultado:
+    path: /resultado-cotizacion
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.cotizacion:resultadoCotizacionAction
+        _tianos:
+            action: create
+            template: UserBundle:Cotizacion:resultado_cotizacion.html.twig
+            entity: Bundle\UserBundle\Entity\Cotizacion
+            roles_granted:
+                - ROLE_USER_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\CotizacionType
+            vars:
+                subheader: sylius.ui.manage_your_user_catalog
+                icon: cube
+                body_css: grid-body-css
+            repository:
+                vars:
+                    serialize_group_name: crud
+
+backend_cotizacion_registrar_solicitud:
+    path: /registrar-solicitud
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.cotizacion:registrarSolicitudAction
+        _tianos:
+            action: create
+            template: UserBundle:Cotizacion:registrar_solicitud.html.twig
+            entity: Bundle\UserBundle\Entity\Cotizacion
+            roles_granted:
+                - ROLE_USER_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\CotizacionType
+            vars:
+                subheader: sylius.ui.manage_your_user_catalog
+                icon: cube
+                body_css: grid-body-css
+            repository:
+                vars:
+                    serialize_group_name: crud
+
+backend_cotizacion_aportante:
+    path: /aportante
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.cotizacion:aportanteAction
+        _tianos:
+            action: create
+            template: UserBundle:Cotizacion:aportante.html.twig
+            entity: Bundle\UserBundle\Entity\Cotizacion
+            roles_granted:
+                - ROLE_USER_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\CotizacionType
+            vars:
+                subheader: sylius.ui.manage_your_user_catalog
+                icon: cube
+                body_css: grid-body-css
+            repository:
+                vars:
+                    serialize_group_name: crud
+
+backend_cotizacion_pago:
+    path: /pago
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.cotizacion:pagoAction
+        _tianos:
+            action: create
+            template: UserBundle:Cotizacion:pago.html.twig
+            entity: Bundle\UserBundle\Entity\Cotizacion
+            roles_granted:
+                - ROLE_USER_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\CotizacionType
+            vars:
+                subheader: sylius.ui.manage_your_user_catalog
+                icon: cube
+                body_css: grid-body-css
+            repository:
+                vars:
+                    serialize_group_name: crud

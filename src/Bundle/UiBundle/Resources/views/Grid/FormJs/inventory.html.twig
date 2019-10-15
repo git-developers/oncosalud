@@ -1,0 +1,50 @@
+{% if dataTable.route.edit is defined %}
+    $('body.{{ vars.body_css }}').formEdit({
+        modalId: '{{ modal.edit_id }}',
+        route: '{{ path(dataTable.route.edit) }}',
+        formName: '{{ form_mapper.edit_name }}',
+        dataTableObject: dataTableObject
+    });
+{% endif %}
+
+{% if dataTable.route.delete is defined %}
+    $('body.{{ vars.body_css }}').formDelete({
+        modalId: '{{ modal.delete_id }}',
+        route: '{{ path(dataTable.route.delete) }}',
+        formName: '{{ form_mapper.delete_name }}',
+        dataTableObject: dataTableObject
+    });
+{% endif %}
+
+{% if dataTable.route.view is defined %}
+    $('body.{{ vars.body_css }}').formView({
+        modalId: '{{ modal.view_id }}',
+        route: '{{ path(dataTable.route.view) }}',
+        tableTdClass: '{{ dataTable.tableOptions.table_td_class }}'
+    });
+{% endif %}
+
+{% if vars.files_upload.route.open_modal is defined and vars.files_upload.route.create is defined %}
+    $('body.{{ vars.body_css }}').formUploadFile({
+        modalId: '{{ modal.image_upload_id }}',
+        className: '{{ vars.files_upload.class_name }}',
+        filter: '{{ vars.files_upload.filter }}',
+        fileType: '{{ vars.files_upload.file_type }}',
+        formName: '{{ form_mapper.image_upload_name }}',
+        routeModal: '{{ path(vars.files_upload.route.open_modal) }}',
+        routeCreate: '{{ path(vars.files_upload.route.create) }}'
+    });
+{% endif %}
+
+{% if dataTable.route.info is defined %}
+    $('body.{{ vars.body_css }}').formInfo({
+        modalId: '{{ modal.info_id }}',
+        route: '{{ path(dataTable.route.info) }}'
+    });
+{% endif %}
+
+{% if vars.random_code|default() %}
+    $(document).on('click', 'span.random', function() {
+    $('input.random').val(Math.random().toString(36).substring(7).toUpperCase());
+    });
+{% endif %}

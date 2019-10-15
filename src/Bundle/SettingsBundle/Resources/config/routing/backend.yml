@@ -1,0 +1,30 @@
+backend_settings_edit:
+    path: /edit
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.settings:editAction
+        _tianos:
+            action: edit
+            template: SettingsBundle:BackendSettings/Form:form.html.twig
+            entity: Bundle\SettingsBundle\Entity\Settings
+            roles_granted:
+                - ROLE_SETTINGS
+            form:
+                type: Bundle\SettingsBundle\Form\Type\SettingsType
+            vars:
+                subheader: sylius.ui.manage_your_ticket_catalog
+                icon: cube
+                body_css: grid-body-css
+                serialize_group_name: crud
+            repository:
+                service: tianos.repository.settings
+                method: findAll
+                arguments: [$settingsId]
+                vars:
+                    serialize_group_name: crud
+
+backend_settings_print_receipt:
+    path: /print-receipt
+    methods: [GET]
+    defaults:
+        _controller: tianos.backend.controller.settings:printReceiptAction

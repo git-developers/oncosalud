@@ -1,0 +1,7 @@
+services:
+
+    tianos.backend.controller.dashboard:
+        class: Bundle\BackendBundle\Controller\DashboardController
+        arguments: [ Bundle\ResourceBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.dashboard, alias: tianos.backend.controller.dashboard }

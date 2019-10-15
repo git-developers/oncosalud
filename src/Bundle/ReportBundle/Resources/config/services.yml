@@ -1,0 +1,45 @@
+services:
+
+    tianos.listener.doctrine.report:
+        class: Bundle\ReportBundle\EventListener\DoctrineListenerService
+        arguments: ["@security.token_storage"]
+        tags:
+          - { name: doctrine.event_listener, event: postUpdate }
+          - { name: doctrine.event_listener, event: preUpdate }
+          - { name: doctrine.event_listener, event: prePersist }
+          - { name: doctrine.event_listener, event: postLoad }
+          - { name: doctrine.event_listener, event: postRemove }
+
+    tianos.api.controller.report:
+        class: Bundle\ReportBundle\Controller\ApiController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.api.controller.report, alias: tianos.api.controller.report }
+
+    tianos.backend.controller.report:
+        class: Bundle\ReportBundle\Controller\ReportController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.report, alias: tianos.backend.controller.report }
+
+    tianos.backend.controller.statistics:
+        class: Bundle\ReportBundle\Controller\StatisticsController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.statistics, alias: tianos.backend.controller.statistics }
+
+    tianos.frontend.controller.report:
+        class: Bundle\ReportBundle\Controller\FrontendController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.frontend.controller.report, alias: tianos.frontend.controller.report }
+
+    tianos.repository.report.pdv:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\ReportBundle\Entity\ReportPdv ]
+
+    tianos.repository.income.and.expenses:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\ReportBundle\Entity\IncomeAndExpenses ]

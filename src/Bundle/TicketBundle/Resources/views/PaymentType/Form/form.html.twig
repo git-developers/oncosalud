@@ -1,0 +1,33 @@
+{% extends 'GridBundle::Template/crud_modal_content.html.twig' %}
+
+{% block crud_modal_content %}
+
+    {% if id is defined %}
+        <input type="hidden" value="{{ id }}" name="id">
+    {% endif %}
+
+    {{ form_widget(form._token) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <i class="fa fa-fw fa-qrcode"></i>
+                {{ form_label(form.code) }}
+                <div class="input-group">
+                    {{ form_widget(form.code) }}
+                    <span class="input-group-addon random">
+                        <i class="fa fa-random"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <i class="fa fa-fw fa-align-left"></i>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

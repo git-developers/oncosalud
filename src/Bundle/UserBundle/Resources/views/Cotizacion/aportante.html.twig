@@ -1,0 +1,195 @@
+{% extends "ThemesBundle:Adminlte/Template:1_template.html.twig" %}
+
+{% import "TreeBundle::Macro/tree_sales.html.twig" as macro %}
+
+{% block bodyclass %}{% spaceless %}
+    {{ vars.body_css }}
+{% endspaceless %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        input[type=radio] {
+            height: 20px;
+            width: 20px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        {#<h1>#}
+            {#<i class="fa fa-fw fa-money"></i> Cotizaci&oacute;n#}
+            {#<small>config</small>#}
+        {#</h1>#}
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{ path('backend_dashboard_index') }}">
+                    <i class="fa fa-dashboard"></i> Home
+                </a>
+            </li>
+            <li class="active">
+                settings
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="info-box bg-light-blue-active">
+                    <span class="info-box-icon">
+                        <i class="fa fa-user"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"></span>
+                        <span class="info-box-number">
+                            Aportante
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                        <span class="progress-description">
+                            config
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">
+                            configuraci&oacute;n
+                        </h4>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <div class="box-body"> {#no-padding#}
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tipo de documento</label>
+                                    <select class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br>
+                                <button type="button" class="btn btn-success">
+                                    <i class="fa fa-fw fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        {#<h4 class="box-title"></h4>#}
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <div class="box-body"> {#no-padding#}
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="{{ path('backend_cotizacion_registrar_solicitud') }}" class="btn btn-danger btn-lg">
+                                    <i class="fa fa-fw fa-arrow-left"></i> Volver
+                                </a>
+                                <a href="{{ path('backend_cotizacion_pago') }}" class="btn btn-primary btn-lg pull-right">
+                                    Siguiente <i class="fa fa-fw fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    {#
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form._token) }}
+
+        <div class="form-group">
+            <i class="fa fa-fw fa-code-fork"></i>
+            <label class="" for="product_size">Modalidad</label>
+            <div class="row">
+                {% for key, val in form.modalidad.vars.choices %}
+                    <div class="col-md-3">
+                        <input
+                                type="radio"
+                                id="product_modalidad_{{ key }}"
+                                name="product[modalidad]"
+                                required="required"
+
+                                {% if form.modalidad.vars.data == val.value %}
+                                    checked="checked"
+                                {% endif %}
+
+                                value="{{ val.value }}">
+                        <label for="product_gender_{{ key }}" class="required x-hand" style="margin-left: 5px">{{ val.label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+
+        {{ form_widget(form) }}
+
+        {{ form_widget(form.submit) }}
+
+        {{ form_end(form) }}
+    #}
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

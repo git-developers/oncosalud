@@ -1,0 +1,240 @@
+backend_product_index:
+    path: /{pdvId}/{categoryId}
+    methods: [GET]
+    defaults:
+        pdvId: 0
+        categoryId: null
+        _controller: tianos.backend.controller.product:indexAction
+        _tianos:
+            action: index
+            section: admin
+            permission: true
+            template: GridBundle::index_inventory.html.twig
+            roles_granted:
+                - ROLE_PRODUCT_VIEW
+            vars:
+                subheader: sylius.ui.manage_your_product_catalog
+                icon: cube
+                body_css: grid-body-css
+                serialize_group_name: crud
+                random_code: true
+                files_upload:
+                    class_name: Product
+                    file_type: images
+                    filter: file_thumb_500_417
+                    route:
+                        create: backend_files_create
+                        open_modal: backend_files_open_modal
+            tree:
+                icon: cubes
+                box_class: primary
+                title: Gestionar servicios
+                main_div: box-main-div
+                main_ul: box-main-ul
+                child_ul: box-child-ul
+                li_span: li-span
+                route:
+                    info: backend_category_tree_info
+                    view: backend_category_tree_view
+                    edit: backend_category_tree_edit
+                    create: backend_category_tree_create
+                    create_child: backend_category_tree_create_child
+                    delete: backend_category_tree_delete
+            grid:
+                icon: cubes
+                box_class: primary
+                title: Gestionar inventario
+                modal:
+                    create:
+                        title: Crear producto
+                        size: modal-xl
+                    edit:
+                        title: Editar producto
+                        size: modal-xl
+                    view:
+                        title: Info de producto
+                        size: modal-lg
+                data_table:
+                    route:
+                        info: backend_product_info
+                        view: backend_product_view
+                        edit: backend_product_edit
+                        create: backend_product_create
+                        delete: backend_product_delete
+                    table_button:
+                        #- edit
+                        #- delete
+                    table_button_header:
+#                        - create
+                        - info
+                    table_option:
+                        pageLength: 10
+                        dom: "'<\"top\"iflp><\"clear\">rt<\"bottom\"iflp>'"
+                    row_call_back:
+                        - key: id
+                          value: aData.product.id
+                        - key: data-id
+                          value: aData.product.id
+                        - key: class
+                          value: "'alert'"
+                    columns:
+                        - obj: " '<span class=\"badge bg-light-blue-active\">' + obj.product.id + '</span>' "
+                          defs:
+                              targets: 0
+                              searchable: 1
+                              sorting: 1
+                              orderable: 1
+                              type: html
+                              width: 7%
+                              title: '#'
+                              className: modal-view text-center
+                        - obj: obj.product.files
+                          options:
+                              property: " return (obj.product.files[0] != null) ? '<img src=\"' + obj.product.files[0] + '\" class=\"img-circle img-thumbnail\">' : '<i class=\"fa fa-2x fa-fw fa-image \"></i>' "
+                          defs:
+                              targets: 1
+                              title: 'Thumb'
+                              width: 5.5%
+                              sorting: 0
+                              orderable: 0
+                              className: image-upload text-center
+                        - obj: " '<div class=\"alert product-color\" style=\"background-color:' + obj.product.color.prefix + '\"></div>' + obj.product.color.name "
+                          defs:
+                              targets: 2
+                              orderable: 0
+                              sorting: 0
+                              width: 12%
+                              title: '<i class="fa fa-fw fa-adjust"></i> Color'
+                              className: padding-0 text-center
+                              filter: 0
+                        - obj: obj.stock
+                          defs:
+                              targets: 3
+                              orderable: 1
+                              sorting: 1
+                              title: Stock
+                              filter: 0
+                              className: text-center
+                        - obj: obj.product.name
+                          defs:
+                              targets: 4
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-align-left"></i> Nombre'
+                              className: modal-edit
+                              filter: 1
+                        - obj: obj.product.price
+                          defs:
+                              targets: 5
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-money"></i> Precio venta'
+                              className: text-center
+                              filter: 1
+#                        - obj: obj.product.size
+#                          defs:
+#                              targets: 4
+#                              orderable: 1
+#                              sorting: 1
+#                              title: '<i class="fa fa-fw fa-arrows-h"></i> Talla'
+#                              className: text-center
+#                              filter: 0
+                        - obj: " '<button class=\"btn btn-xs btn-danger\"><i class=\"fa fa-fw fa-trash\"></i></button>' "
+                          defs:
+                              targets: 6
+                              title: Eliminar
+                              width: 7%
+                              sorting: 0
+                              orderable: 0
+                              className: modal-delete text-center
+            form:
+                type: Bundle\ProductBundle\Form\Type\ProductType
+            repository:
+                service: tianos.repository.pointofsale.has.product
+                method: findByPdvAndCategory
+                arguments: [$productId]
+                vars:
+                    serialize_group_name: pdv_product
+                    entity_type: product
+
+backend_product_create:
+    path: /create
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.product:createAction
+        _tianos:
+            action: create
+            template: ProductBundle:BackendProduct/Form:form.html.twig
+            entity: Bundle\ProductBundle\Entity\Product
+            roles_granted:
+                - ROLE_PRODUCT_CREATE
+            form:
+                type: Bundle\ProductBundle\Form\Type\ProductType
+            repository:
+                vars:
+                    serialize_group_name: pdv_product
+
+backend_product_edit:
+    path: /edit
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.product:editAction
+        _tianos:
+            action: edit
+            template: ProductBundle:BackendProduct/Form:form.html.twig
+            roles_granted:
+                - ROLE_PRODUCT_EDIT
+            form:
+                type: Bundle\ProductBundle\Form\Type\ProductType
+            repository:
+                service: tianos.repository.product
+                method: find
+                arguments: [$productId]
+                vars:
+                    serialize_group_name: pdv_product
+
+backend_product_delete:
+    path: /delete
+    methods: [POST, DELETE]
+    defaults:
+        _controller: tianos.backend.controller.product:deleteAction
+        _tianos:
+            action: delete
+            template: GridBundle:Template:delete.html.twig
+            roles_granted:
+                - ROLE_PRODUCT_DELETE
+            repository:
+                service: tianos.repository.product
+                method: find
+                arguments: [$productId]
+            vars:
+#                body_css: grid-body-css
+
+backend_product_view:
+    path: /view
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.product:viewAction
+        _tianos:
+            action: view
+            template: ProductBundle:BackendProduct/Informative:view.html.twig
+            roles_granted:
+                - ROLE_PRODUCT_VIEW
+            repository:
+                service: tianos.repository.product
+                method: findOne
+                arguments: [$productId]
+                vars:
+                    serialize_group_name: pdv_product
+
+backend_product_info:
+    path: /info
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.product:infoAction
+        _tianos:
+            action: info
+            template: ProductBundle:BackendProduct/Informative:info.html.twig
+
+
+

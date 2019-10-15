@@ -1,0 +1,210 @@
+backend_pointofsale_index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:indexAction
+        _tianos:
+            action: index
+            section: admin
+            permission: true
+            template: GridBundle::index.html.twig
+            roles_granted:
+                - ROLE_PDV_VIEW
+            vars:
+                subheader: sylius.ui.manage_your_pointofsale_catalog
+                icon: cube
+                body_css: grid-body-css
+                google_maps: true
+                copy_clipboard: true
+                random_code: true
+            grid:
+                icon: map-marker
+                box_class: primary
+                title: Gestionar puntos de ventas
+                modal:
+                    create:
+                        title: Crear punto de venta
+                        size: modal-lg
+                    edit:
+                        title: Editar punto de venta
+                        size: modal-lg
+                data_table:
+                    route:
+                        info: backend_pointofsale_info
+                        view: backend_pointofsale_view
+                        edit: backend_pointofsale_edit
+                        create: backend_pointofsale_create
+                        delete: backend_pointofsale_delete
+                        cog: backend_pointofsale_add_user_index
+                    table_button:
+                        #- edit
+                        #- delete
+                        #- cog
+                    table_button_header:
+                        - create
+                        - info
+                    table_option:
+                        pageLength: 50
+                        dom: "'<\"top\"iflp><\"clear\">rt<\"bottom\"iflp>'"
+                    row_call_back:
+                        - key: id
+                          value: aData.id
+                        - key: data-id
+                          value: aData.id
+                        - key: class
+                          value: "'alert'"
+                    columns:
+                        - obj: " '<span class=\"badge bg-light-blue-active\">' + obj.id + '</span>' "
+                          defs:
+                              targets: 0
+                              searchable: 1
+                              sorting: 1
+                              orderable: 1
+                              type: num
+                              width: 4%
+                              title: '#'
+                              className: modal-view text-center
+                        - obj: obj.name
+                          defs:
+                              targets: 1
+                              orderable: 1
+                              sorting: 1
+                              type: html
+                              title: Nombre
+                              className: modal-edit
+                              filter: 1
+                        - obj: obj.status
+                          options:
+                              property: " if(obj.status == 1){return '<span class=\"label label-success fontsize-12\">ABIERTO</span>';
+                              }else {return '<span class=\"label label-danger fontsize-12\">CERRADO</span>';} "
+                          defs:
+                              targets: 2
+                              orderable: 1
+                              sorting: 1
+                              type: html
+                              title: Status
+                              width: 10%
+                              className: text-center
+                              filter: 1
+                        - obj: " obj.latitude + ' __ ' + obj.longitude "
+                          defs:
+                              targets: 3
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-map-marker"></i> Coordenadas'
+                              className: text-center
+                              filter: 1
+                        - obj: " '<span class=\"badge bg-blue\">' + obj.created_at_diff + '</span>' "
+                          defs:
+                              targets: 4
+                              title: '<i class="fa fa-fw fa-clock-o"></i> Dias creado'
+                              className: text-center
+                        - obj: obj.created_at
+                          defs:
+                              targets: 5
+                              title: '<i class="fa fa-fw fa-calendar"></i> Creado'
+                              className: text-center
+                        - obj: " '<button class=\"btn btn-xs btn-primary\"><i class=\"fa fa-fw fa-cog\"></i></button>' "
+                          defs:
+                              targets: 6
+                              title: Settings
+                              width: 4%
+                              sorting: 0
+                              orderable: 0
+                              className: pointofsale-cog text-center
+                        - obj: " '<button class=\"btn btn-xs btn-danger\"><i class=\"fa fa-fw fa-trash\"></i></button>' "
+                          defs:
+                              targets: 7
+                              title: Eliminar
+                              width: 4%
+                              sorting: 0
+                              orderable: 0
+                              className: modal-delete text-center
+            form:
+                type: Bundle\PointofsaleBundle\Form\Type\PointofsaleType
+            repository:
+                service: tianos.repository.pointofsale
+                method: findAllParents
+                arguments: [$pointofsaleId]
+                vars:
+                    serialize_group_name: crud
+
+backend_pointofsale_create:
+    path: /create
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:createAction
+        _tianos:
+            action: create
+            template: PointofsaleBundle:BackendPointofsale/Form:form_create.html.twig
+            entity: Bundle\PointofsaleBundle\Entity\Pointofsale
+            roles_granted:
+                - ROLE_PDV_CREATE
+            form:
+                type: Bundle\PointofsaleBundle\Form\Type\PointofsaleType
+            repository:
+                vars:
+                    serialize_group_name: crud
+
+backend_pointofsale_edit:
+    path: /edit
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:editAction
+        _tianos:
+            action: edit
+            template: PointofsaleBundle:BackendPointofsale/Form:form_edit.html.twig
+            entity: Bundle\PointofsaleBundle\Entity\Pointofsale
+            roles_granted:
+                - ROLE_PDV_EDIT
+            form:
+                type: Bundle\PointofsaleBundle\Form\Type\PointofsaleType
+            repository:
+                service: tianos.repository.pointofsale
+                method: find
+                arguments: [$pointofsaleId]
+                vars:
+                    serialize_group_name: crud
+
+backend_pointofsale_delete:
+    path: /delete
+    methods: [POST, DELETE]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:deleteAction
+        _tianos:
+            action: delete
+            template: GridBundle:Template:delete.html.twig
+            roles_granted:
+                - ROLE_PDV_DELETE
+            repository:
+                service: tianos.repository.pointofsale
+                method: find
+                arguments: [$pointofsaleId]
+            vars:
+#                body_css: grid-body-css
+
+backend_pointofsale_view:
+    path: /view
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:viewAction
+        _tianos:
+            action: view
+            template: PointofsaleBundle:BackendPointofsale/Informative:view.html.twig
+            roles_granted:
+                - ROLE_PDV_VIEW
+            repository:
+                service: tianos.repository.pointofsale
+                method: findParentAndChildren
+                arguments: [$pointofsaleId]
+                vars:
+                    serialize_group_name: crud
+
+backend_pointofsale_info:
+    path: /info
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale:infoAction
+        _tianos:
+            action: info
+            template: PointofsaleBundle:BackendPointofsale/Informative:info.html.twig

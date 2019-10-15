@@ -1,0 +1,388 @@
+{% extends "ThemesBundle:Adminlte/Template:1_template.html.twig" %}
+
+{% import "TreeBundle::Macro/tree_sales.html.twig" as macro %}
+
+{% block bodyclass %}{% spaceless %}
+    {{ vars.body_css }}
+{% endspaceless %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        input[type=radio] {
+            height: 20px;
+            width: 20px;
+        }
+        table.afiliado {
+            border: 1px solid grey !important;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        {#<h1>#}
+            {#<i class="fa fa-fw fa-money"></i> Cotizaci&oacute;n#}
+            {#<small>config</small>#}
+        {#</h1>#}
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{ path('backend_dashboard_index') }}">
+                    <i class="fa fa-dashboard"></i> Home
+                </a>
+            </li>
+            <li class="active">
+                settings
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="info-box bg-light-blue-active">
+                    <span class="info-box-icon">
+                        <i class="fa fa-fw fa-balance-scale"></i>
+                    </span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text"></span>
+                        <span class="info-box-number">
+                            Resultado Cotizaci&oacute;n
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                        <span class="progress-description">
+                            config
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <div class="box box-success box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            ANUAL
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+                        <h3 class="box-title text-center" style="margin-top: 10px">
+                            <i class="fa fa-fw fa-credit-card"></i> Con todas las tarjetas
+                        </h3>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #1</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-green pull-right">
+                                                S/ 899.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">29</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="col-md-12">
+
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #2</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-green pull-right">
+                                                S/ 750.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">20</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px">
+                                <i class="fa fa-fw fa-money"></i> Total
+                            </h3>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px; font-weight: bold">
+                                S/ 1,263.00
+                            </h3>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-block btn-success btn-lg" href="{{ path('backend_cotizacion_registrar_solicitud') }}">
+                            Afiliar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="box box-warning box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            MENSUAL
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+                        <h3 class="box-title text-center" style="margin-top: 10px">
+                            <i class="fa fa-fw fa-cc-mastercard"></i> Con tarjeta de debito
+                        </h3>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #1</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-yellow pull-right">
+                                                S/ 899.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">29</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="col-md-12">
+
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #2</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-yellow pull-right">
+                                                S/ 750.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">20</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px">
+                                <i class="fa fa-fw fa-money"></i> Total
+                            </h3>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px; font-weight: bold">
+                                S/ 1,578.00
+                            </h3>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-block btn-warning btn-lg" href="{{ path('backend_cotizacion_registrar_solicitud') }}">
+                            Afiliar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="box box-danger box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+                            MENSUAL
+                        </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+
+                        <h3 class="box-title text-center" style="margin-top: 10px">
+                            <i class="fa fa-fw fa-cc-visa"></i> Con tarjeta de credito
+                        </h3>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #1</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-red pull-right">
+                                                S/ 899.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">29</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <table class="table table-bordered table-striped afiliado" border="1">
+                                    <thead>
+                                    <tr>
+                                        <th>Afiliado #2</th>
+                                        <th></th>
+                                        <th>
+                                            <div class="external-event bg-red pull-right">
+                                                S/ 750.00
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-user"></i> Edad</td>
+                                        <td colspan="2">20</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-fw fa-fire"></i> Fumador</td>
+                                        <td colspan="2"><span class="badge bg-red">No</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px">
+                                <i class="fa fa-fw fa-money"></i> Total
+                            </h3>
+
+                            <h3 class="box-title text-center" style="margin-top: 10px; font-weight: bold">
+                                S/ 2,345.00
+                            </h3>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-block btn-danger btn-lg" href="{{ path('backend_cotizacion_registrar_solicitud') }}">
+                            Afiliar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+{% endblock %}
+
+
+
+
+
+
+
+

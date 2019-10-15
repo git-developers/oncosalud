@@ -1,0 +1,218 @@
+{% extends 'GridBundle::Template/crud_modal_content.html.twig' %}
+
+{% block crud_modal_content %}
+    <div class="box box-solid">
+        {#<div class="box-header with-border">#}
+            {#<h3 class="box-title">About Me</h3>#}
+        {#</div>#}
+
+        <div class="box-body">
+
+            <div class="row">
+
+                {#LEFT#}
+                <div class="col-md-6">
+
+                    <div class="alert bg-light-blue alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4 style="margin-bottom: 0px !important;">
+                            <i class="icon fa fa-sitemap"></i>
+                            <span class="badge bg-light-blue-active">
+                                {{ entity.category.id }}
+                            </span>
+                            {{ entity.category.name }}
+                        </h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>
+                                <i class="fa fa-bookmark-o margin-r-5"></i> Id
+                            </strong>
+
+                            <p class="text-muted">
+                                <span class="badge bg-light-blue-active">
+                                    {{ entity.id }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>
+                                <i class="fa fa-qrcode margin-r-5"></i> C&oacute;digo
+                            </strong>
+
+                            <p class="text-muted">
+                                {{ entity.code }}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>
+                                <i class="fa fa-barcode margin-r-5"></i> Barcode
+                            </strong>
+
+                            <p class="text-muted">
+                                {{ entity.barcode }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <strong>
+                        <i class="fa fa-book margin-r-5"></i> Nombre
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ entity.name }}
+                    </p>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>
+                                <i class="fa fa-money margin-r-5"></i> Precio de venta
+                            </strong>
+
+                            <p class="text-muted">
+                                S/ {{ entity.price }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>
+                                <i class="fa fa-money margin-r-5"></i> Costo
+                            </strong>
+
+                            <p class="text-muted">
+                                S/ {{ entity.cost }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>
+                                <i class="fa fa-code-fork margin-r-5"></i> Tipo de uso
+                            </strong>
+
+                            <p class="text-muted">
+                                <span
+                                    style="font-size: 90%;"
+                                    class="label label-{{ entity.unit.id == constant('Bundle\\ProductBundle\\Entity\\Unit::UNIDAD_ID') ? 'warning' : 'primary' }}">
+                                    {{ entity.unit.name|capitalize }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>
+                                <i class="fa fa-arrows-h margin-r-5"></i> Talla
+                            </strong>
+
+                            <p class="text-muted">
+                                {% if entity.unit.id == constant('Bundle\\ProductBundle\\Entity\\Unit::UNIDAD_ID') %}
+                                    {{ entity.size }}
+                                {% else %}
+                                    {{ entity.sizeRange }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <strong>
+                        <i class="fa fa-adjust margin-r-5"></i> Color
+                    </strong>
+
+                    <p class="text-muted">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button
+                                    type="button"
+                                    class="btn btn-flat"
+                                    style="color: #343434; width: 100%; background-color: {{ entity.color.prefix }}">
+                                    &nbsp;
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                {{ entity.color.name }}
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+
+                    <strong>
+                        <i class="fa fa-calendar margin-r-5"></i> Creado
+                    </strong>
+
+                    <p class="text-muted">
+                        {{ entity.createdAt|date('Y-m-d H:i') }}
+                    </p>
+
+                </div>
+                {#LEFT#}
+
+                {#RIGHT#}
+                <div class="col-md-6">
+                    <div class="box box-primary bg-light-blue">
+                        <div class="box-header with-border">
+                            <h3 class="box-title white">
+                                <i class="fa fa-fw fa-map-marker"></i> Puntos de venta
+                            </h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th class="text-center">Stock</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for key, pdvHasproduct in pdvHasproducts %}
+                                        <tr>
+                                            <td>
+                                                <span class="label bg-light-blue-active">
+                                                    {{ pdvHasproduct.pointOfSale.id }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ pdvHasproduct.pointOfSale.name }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ pdvHasproduct.stock }}
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">
+                                                No hay punto de venta asignado.
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {#<div class="box-footer clearfix"></div>#}
+                    </div>
+                </div>
+                {#RIGHT#}
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

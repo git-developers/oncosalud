@@ -1,0 +1,530 @@
+{% extends 'GridBundle::Template/crud_modal_content.html.twig' %}
+
+{% block crud_modal_content %}
+
+    {% if id is defined %}
+        <input type="hidden" value="{{ id }}" name="id">
+    {% endif %}
+
+    {{ form_widget(form._token) }}
+
+    {{ form_widget(form.category) }}
+
+    <div class="row">
+
+        {#LEFT#}
+        <div class="col-md-7">
+
+            <div class="alert bg-light-blue alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4 style="margin-bottom: 0px !important;">
+                    <i class="icon fa fa-sitemap"></i>
+                    <span class="badge bg-light-blue-active">
+                        {{ form.category.vars.data.id }}
+                    </span>
+                    {{ form.category.vars.data.name }}
+                </h4>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <i class="fa fa-fw fa-code-fork"></i>
+                        {{ form_label(form.unit) }}
+                        {{ form_widget(form.unit) }}
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fa fa-fw fa-arrows-h"></i>
+                        {{ form_label(form.size) }}
+                        {{ form_widget(form.size, {'attr': {'style': ''}}) }}
+                        {{ form_widget(form.sizeRange, {'attr': {'style': ''}}) }}
+                        <select name="size_dummy" class="form-control black-5" style="background-color: #ddd;">
+                            <option value="">[ Seleccionar ]</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fa fa-fw fa-code-fork"></i>
+                        <label class="" for="product_size">Genero</label>
+                        <div class="row">
+                            {% for key, val in form.gender.vars.choices %}
+                                <div class="col-md-6">
+                                    <input
+                                        type="radio"
+                                        id="product_gender_{{ key }}"
+                                        name="product[gender]"
+                                        required="required"
+
+                                        {% if form.gender.vars.data == val.value %}
+                                            checked="checked"
+                                        {% endif %}
+
+                                        value="{{ val.value }}">
+                                    <label for="product_gender_{{ key }}" class="required x-hand" style="margin-left: 5px">{{ val.label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <i class="fa fa-fw fa-object-ungroup"></i>
+                        Series
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ include('ProductBundle:BackendProduct/Form:series_table.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom nav-tabs-custom-{{ action }}">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab-{{ action }}-1" data-toggle="tab" aria-expanded="true">
+                                    Info general
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#tab-{{ action }}-2" data-toggle="tab" aria-expanded="false">
+                                    Precio
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#tab-{{ action }}-3" data-toggle="tab" aria-expanded="false">
+                                    Barcode
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab-{{ action }}-1">
+                                <div class="row">
+
+                                    {#
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-qrcode"></i>
+                                            {{ form_label(form.code) }}
+                                            <div class="input-group">
+                                                {{ form_widget(form.code) }}
+                                                <span class="input-group-addon random">
+                                                    <i class="fa fa-random"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    #}
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-align-left"></i>
+                                            {{ form_label(form.name) }}
+                                            {{ form_widget(form.name) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-adjust"></i>
+                                            {{ form_label(form.color) }}
+                                            {{ form_widget(form.color) }}
+
+                                            <div class="dropdown">
+
+                                                {% if form.color.vars.choices[form.color.vars.value] is defined %}
+
+                                                    {% set color = form.color.vars.choices[form.color.vars.value] %}
+
+                                                    <button
+                                                        class="btn btn-default dropdown-toggle"
+                                                        type="button"
+                                                        style="color: black; width: 100%; background-color: {{ color.data.prefix }}"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="true">
+                                                        <span class="selected">{{ color.label }}</span> &nbsp;
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                {% else %}
+                                                    <button
+                                                        class="btn btn-default dropdown-toggle"
+                                                        type="button"
+                                                        style="color: black; width: 100%;"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="true">
+                                                        <span class="selected">[ Seleccionar ]</span> &nbsp;
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                {% endif %}
+
+                                                <ul class="dropdown-menu dropdown-color" aria-labelledby="dropdownMenu1" style="width: 100%">
+
+                                                    <li>
+                                                        <a href="#">
+                                                            [ Seleccionar ]
+                                                        </a>
+                                                    </li>
+
+                                                    {% for key, val in form.color.vars.choices %}
+                                                        <li>
+                                                            <a
+                                                                href="#"
+                                                                data-value="{{ val.value }}"
+                                                                data-prefix="{{ val.data.prefix }}">
+                                                                <button
+                                                                        type="button"
+                                                                        class="btn btn-flat"
+                                                                        style="color: #343434; width: 100%; background-color: {{ val.data.prefix }}">
+                                                                    {{ val.label }}
+                                                                </button>
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-file-text-o"></i>
+                                            {{ form_label(form.reference) }}
+                                            {{ form_widget(form.reference) }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab-{{ action }}-2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-money"></i>
+                                            {{ form_label(form.price) }}
+                                            <div class="input-group">
+                                                <span class="input-group-addon">S/</span>
+                                                {{ form_widget(form.price) }}
+                                                <span class="input-group-addon">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-money"></i>
+                                            {{ form_label(form.cost) }}
+                                            <div class="input-group">
+                                                <span class="input-group-addon">S/</span>
+                                                {{ form_widget(form.cost) }}
+                                                <span class="input-group-addon">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab-{{ action }}-3">
+
+                                {% if entity|default() is empty %}
+                                    <p>&nbsp;</p>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <i class="fa fa-fw fa-barcode"></i>
+                                            Barcode se autogenera luego de crear el producto.
+                                        </div>
+                                    </div>
+                                    <p>&nbsp;</p>
+                                {% else %}
+                                    <div class="row print-barcode" style="background-color: white; color: #000; margin: 20px">
+                                        <div class="col-md-4" align="center">
+                                            <div class=frame>
+                                                <span class="helper"></span>
+                                                <img
+                                                    src="{{ entity.files|first }}"
+                                                    class="img-circle img-thumbnail"
+                                                    alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8" align="center">
+                                            <h3>
+                                                {{ entity.name }} <span class="text-bold">{{ entity.color.name }}</span>
+                                            </h3>
+                                            <img
+                                                src="{{ asset('bundles/themes/common/images/barcode.png') }}"
+                                                height="100"
+                                                alt="" />
+                                            <h4 class="text-center">{{ entity.barcode }}</h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-outline pull-right print-barcode">Imprimir</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {#
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <i class="fa fa-fw fa-barcode"></i>
+                                            {{ form_label(form.barcode) }}
+                                            {{ form_widget(form.barcode) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                #}
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {#LEFT#}
+
+        {#RIGHT#}
+        <div class="col-md-5">
+            <div class="box box-solid box-pdv black-3">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        <i class="fa fa-fw fa-map-marker"></i> {{ form.pdvHasproduct.vars.label }}
+                    </h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, val in form.pdvHasproduct.children %}
+                                <tr>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            value="{{ val.vars.value }}"
+                                            name="pdvHasproduct[{{ key }}][pdv]"
+                                            {{ pdvHasproductIds[val.vars.value] is defined or val.vars.value == pdvId|default() ? 'checked' : '' }}>
+                                    </td>
+                                    <td>
+                                        <span class="label bg-light-blue-active">
+                                            {{ val.vars.value }}
+                                        </span>
+                                    </td>
+                                    <td class="pdv">
+                                        {{ val.vars.label }}
+                                    </td>
+
+                                    <td>
+                                        <input
+                                            type="text"
+                                            value="{{ pdvHasproductIds[val.vars.value] is defined ? pdvHasproductIds[val.vars.value] : '' }}"
+                                            class="form-control"
+                                            onkeyup="this.value = this.value.replace(/[^0-9\.]/g,'');"
+                                            name="pdvHasproduct[{{ key }}][stock]"
+                                            style="width: 100px">
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {#<div class="box-footer clearfix"></div>#}
+            </div>
+        </div>
+        {#RIGHT#}
+
+    </div>
+
+    <style type="text/css">
+        .frame {
+            height: 250px;      /* equals max image height */
+            width: 200px;
+            white-space: nowrap;
+            text-align: center;
+            /*margin: 1em 0;*/
+        }
+
+        .helper {
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        img {
+            vertical-align: middle;
+            max-height: 250px;
+            max-width: 200px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            div.print-barcode, div.print-barcode * {
+                visibility: visible;
+                /*width: 400px;*/
+            }
+            div.print-barcode {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            {% if form.gender.vars.data <= 0 %}
+                $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', true);
+            {% elseif form.gender.vars.data > 0 %}
+
+                var gender = $("input[name='{{ form.gender.vars.full_name }}']").val().trim();
+                var sizeRange = $("select[name='{{ form.sizeRange.vars.full_name }}']").find("option:selected").val().trim();
+
+                $("table.series").hide();
+                $("table." + sizeRange + "-" + gender).show();
+            {% endif %}
+
+        });
+
+        $("button.print-barcode").click(function() {
+            $("div.print-barcode").show();
+            window.print();
+        });
+
+        $(".dropdown").on("show.bs.dropdown", function () {
+
+        });
+
+        $(".dropdown-color a").click(function() {
+
+            var value = $(this).data("value");
+            var prefix = $(this).data("prefix");
+            var button = $("button.dropdown-toggle");
+            var select = $("select[name='{{ form.color.vars.full_name }}']");
+
+            if (typeof value == "undefined") {
+                select.prop("selectedIndex", 0);
+                button.css("background-color", "");
+                button.find("span.selected").text($(this).text());
+                return false;
+            }
+
+            button.find("span.selected").text($(this).text());
+            button.css("background-color", prefix);
+            select.val(value);
+        });
+
+        $(document).ready(function() {
+            size("{{ form.unit.vars.data.id|default() }}");
+        });
+
+        $("select[name='{{ form.unit.vars.full_name }}']").change(function() {
+            size($(this).find("option:selected").val().trim());
+            $("input[name='{{ form.gender.vars.full_name }}']").prop('checked', false);
+
+            $("table.series").hide();
+            $("table.default-serie").show();
+            $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', true);
+        });
+
+        $("select[name='{{ form.size.vars.full_name }}']").change(function() {
+
+            $("table.series").hide();
+            $("table.default-serie").show();
+            $("input[name='{{ form.gender.vars.full_name }}']").prop('checked', false);
+
+            var size = $(this).find("option:selected").val().trim();
+
+            if (size == "") {
+                $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', true);
+            } else {
+                $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', false);
+            }
+        });
+
+        $("select[name='{{ form.sizeRange.vars.full_name }}']").change(function() {
+
+            $("table.series").hide();
+            $("table.default-serie").show();
+            $("input[name='{{ form.gender.vars.full_name }}']").prop('checked', false);
+
+            var sizeRange = $(this).find("option:selected").val().trim();
+
+            if (sizeRange == "") {
+                $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', true);
+            } else {
+                $("input[name='{{ form.gender.vars.full_name }}']").attr('disabled', false);
+            }
+        });
+
+        $("input[name='{{ form.gender.vars.full_name }}']").change(function() {
+
+            var gender = $(this).val();
+            var sizeRange = $("select[name='{{ form.sizeRange.vars.full_name }}']").find("option:selected").val().trim();
+
+            $("table.series").hide();
+            $("table." + sizeRange + "-" + gender).show();
+        });
+
+        function size(text) {
+
+            $("select[name='size_dummy']").show();
+            $("select[name='{{ form.size.vars.full_name }}']").hide();
+            $("select[name='{{ form.sizeRange.vars.full_name }}']").hide();
+
+            if (text == "") {
+                return false;
+            }
+
+            if ("{{ constant('Bundle\\ProductBundle\\Entity\\Unit::UNIDAD_ID') }}" == text) {
+                $("select[name='size_dummy']").hide();
+                $("select[name='{{ form.size.vars.full_name }}']").hide();
+                $("select[name='{{ form.sizeRange.vars.full_name }}']").show();
+            } else {
+                $("select[name='size_dummy']").hide();
+                $("select[name='{{ form.size.vars.full_name }}']").show();
+                $("select[name='{{ form.sizeRange.vars.full_name }}']").hide();
+            }
+        }
+
+    </script>
+
+{% endblock %}

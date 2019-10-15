@@ -1,0 +1,232 @@
+backend_pointofsale_add_user_index:
+    path: /{id}
+    methods: [GET]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:indexAction
+        _tianos:
+            action: index
+            section: admin
+            permission: true
+            template: GridBundle::index_add_user.html.twig
+            roles_granted:
+                - ROLE_PDV_VIEW
+            vars:
+                subheader: sylius.ui.manage_your_pointofsale_catalog
+                icon: cube
+                body_css: grid-body-css
+                box_class: primary
+                copy_clipboard: true
+            grid:
+                icon: user
+                box_class: primary
+                title: 'Gestionar puntos de ventas: Agregar usuarios'
+                modal:
+                    create:
+                        title: Crear usuario
+                        size: modal-lg
+                    edit:
+                        title: Editar usuario
+                        size: modal-lg
+                    view:
+                        title: Ver usuario
+                        size: modal-lg
+                    change_password:
+                        title: Cambiar password
+                data_table:
+                    route:
+                        info: backend_super_pointofsale_add_user_info
+                        view: backend_super_pointofsale_add_user_view
+                        edit: backend_super_pointofsale_add_user_edit
+                        create: backend_super_pointofsale_add_user_create
+                        delete: backend_super_pointofsale_add_user_delete
+                        add_user: backend_super_pointofsale_add_user
+                        view_profile: backend_user_profile
+                        change_password: backend_super_user_change_password
+                    table_button:
+                        #- edit
+                        #- delete
+                        #- add_user
+                        #- change_password
+                    table_button_header:
+#                        - create_pdv_child
+                        - create
+                        - info
+                    table_option:
+                        pageLength: 20
+                        dom: "'<\"top\"iflp><\"clear\">rt<\"bottom\"iflp>'"
+                    row_call_back:
+                        - key: id
+                          value: aData.id
+                        - key: data-id
+                          value: aData.id
+                        - key: data-slug
+                          value: aData.slug
+                        - key: class
+                          value: "'alert'"
+                    columns:
+                        - obj: " '<span class=\"badge bg-light-blue-active\">' + obj.id + '</span>' "
+                          defs:
+                              targets: 0
+                              searchable: 1
+                              sorting: 1
+                              orderable: 1
+                              type: html
+                              width: 4%
+                              title: '#'
+                              className: modal-view text-center
+                        - obj: obj.name_box
+                          defs:
+                              targets: 1
+                              orderable: 1
+                              sorting: 1
+                              title: Nombre
+                              className: modal-edit text-center
+                              filter: 1
+                        - obj: obj.profile.name
+                          options:
+                              icon: imagen
+                              property: " return (obj.profile.slug == 'client') ? '<span class=\"badge bg-navy\">' + obj.profile.name + '</span>' : '<span class=\"badge bg-purple\">' + obj.profile.name + '</span>' "
+                          defs:
+                              targets: 2
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-user"></i> Profile'
+                              className: text-center
+                              filter: 1
+                        - obj: obj.created_at
+                          defs:
+                              targets: 3
+                              title: '<i class="fa fa-fw fa-calendar"></i> Creado'
+                              className: text-center
+                        - obj: " '<button class=\"btn btn-xs bg-olive\"><i class=\"fa fa-fw fa-user\"></i></button>' "
+                          defs:
+                              targets: 4
+                              title: Perfil
+                              width: 4%
+                              sorting: 0
+                              orderable: 0
+                              className: profile-button-id text-center
+                        - obj: " '<button class=\"btn btn-xs btn-info\"><i class=\"fa fa-fw fa-lock\"></i></button>' "
+                          defs:
+                              targets: 5
+                              title: Password
+                              width: 4%
+                              sorting: 0
+                              orderable: 0
+                              className: change-password-id text-center
+                        - obj: " '<button class=\"btn btn-xs btn-danger\"><i class=\"fa fa-fw fa-trash\"></i></button>' "
+                          defs:
+                              targets: 6
+                              title: Eliminar
+                              width: 4%
+                              sorting: 0
+                              orderable: 0
+                              className: modal-delete text-center
+            form:
+                type: Bundle\UserBundle\Form\Type\UserType
+            repository:
+                service: tianos.repository.pointofsale
+                method: findByPDV
+                arguments: [$userId]
+                vars:
+                    serialize_group_name: pointofsale-has-user
+
+
+backend_super_user_change_password:
+    path: /change-password
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:changePasswordAction
+        _tianos:
+            action: edit
+            template: UserBundle:Backend/Form:change_password.html.twig
+            entity: Bundle\UserBundle\Entity\ChangePassword2
+            roles_granted:
+                - ROLE_PDV_VIEW
+            form:
+                type: Bundle\UserBundle\Form\Type\UserChangePasswordType2
+            repository:
+                service: tianos.repository.user
+                method: find
+                arguments: [$userId]
+                vars:
+                    serialize_group_name: crud
+
+backend_super_pointofsale_add_user_create:
+    path: /create
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:createAction
+        _tianos:
+            action: create
+            template: UserBundle:Backend/Form:form.html.twig
+            entity: Bundle\UserBundle\Entity\User
+            roles_granted:
+                - ROLE_PDV_CREATE
+            form:
+                type: Bundle\UserBundle\Form\Type\UserType
+            repository:
+                vars:
+                    serialize_group_name: pointofsale-has-user
+
+backend_super_pointofsale_add_user_edit:
+    path: /edit
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:editAction
+        _tianos:
+            action: edit
+            template: UserBundle:Backend/Form:form.html.twig
+            roles_granted:
+                - ROLE_PDV_EDIT
+            form:
+                type: Bundle\UserBundle\Form\Type\UserType
+            repository:
+                service: tianos.repository.user
+                method: find
+                arguments: [$userId]
+                vars:
+                    serialize_group_name: pointofsale-has-user
+
+backend_super_pointofsale_add_user_delete:
+    path: /delete
+    methods: [POST, DELETE]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:deleteAction
+        _tianos:
+            action: delete
+            template: GridBundle:Template:delete.html.twig
+            roles_granted:
+                - ROLE_PDV_DELETE
+            repository:
+                service: tianos.repository.user
+                method: find
+                arguments: [$userId]
+            vars:
+#                body_css: grid-body-css
+
+backend_super_pointofsale_add_user_view:
+    path: /view
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:viewAction
+        _tianos:
+            action: view
+            template: UserBundle:Backend/Informative:view.html.twig
+            roles_granted:
+                - ROLE_PDV_VIEW
+            repository:
+                service: tianos.repository.user
+                method: find
+                arguments: [$userId]
+                vars:
+                    serialize_group_name: crud
+
+backend_super_pointofsale_add_user_info:
+    path: /info
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.pointofsale.add.user:infoAction
+        _tianos:
+            action: info
+            template: UserBundle:Backend/Informative:info.html.twig

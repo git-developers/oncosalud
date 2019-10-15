@@ -1,0 +1,110 @@
+services:
+
+    tianos.listener.doctrine.ticket:
+        class: Bundle\TicketBundle\EventListener\DoctrineListenerService
+        arguments: ["@security.token_storage"]
+        tags:
+          - { name: doctrine.event_listener, event: postUpdate }
+          - { name: doctrine.event_listener, event: preUpdate }
+          - { name: doctrine.event_listener, event: prePersist }
+          - { name: doctrine.event_listener, event: postLoad }
+          - { name: doctrine.event_listener, event: postRemove }
+
+    tianos.api.controller.ticket:
+        class: Bundle\TicketBundle\Controller\ApiController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.api.controller.ticket, alias: tianos.api.controller.ticket }
+
+    tianos.backend.controller.ticket:
+        class: Bundle\TicketBundle\Controller\BackendController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.ticket, alias: tianos.backend.controller.ticket }
+
+    tianos.backend.controller.sales:
+        class: Bundle\TicketBundle\Controller\SalesController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.sales, alias: tianos.backend.controller.sales }
+
+    tianos.backend.controller.orders:
+        class: Bundle\TicketBundle\Controller\OrdersController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.orders, alias: tianos.backend.controller.orders }
+
+    tianos.backend.controller.orders:
+        class: Bundle\TicketBundle\Controller\OrdersController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.orders, alias: tianos.backend.controller.orders }
+
+    tianos.backend.controller.payment.history:
+        class: Bundle\TicketBundle\Controller\PaymentHistoryController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.payment.history, alias: tianos.backend.controller.payment.history }
+
+    tianos.backend.controller.payment.type:
+        class: Bundle\TicketBundle\Controller\PaymentTypeController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.backend.controller.paymentType, alias: tianos.backend.controller.paymentType }
+
+    tianos.frontend.controller.ticket:
+        class: Bundle\TicketBundle\Controller\FrontendController
+        arguments: [ Bundle\GridBundle\Factory\RequestConfigurationFactoryInterface ]
+        tags:
+            - { name: tianos.frontend.controller.ticket, alias: tianos.frontend.controller.ticket }
+
+    tianos.repository.payment.type:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\PaymentType ]
+
+    tianos.repository.ticket:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\Ticket ]
+
+    tianos.repository.sales:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\Sales ]
+
+    tianos.repository.orders:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\Orders ]
+
+    tianos.repository.payment.history:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\PaymentHistory ]
+
+    tianos.repository.ticket.services:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\TicketHasServices ]
+
+    tianos.repository.ticket.products:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\TicketHasProducts ]
+
+    tianos.repository.sales.has.products:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\SalesHasProducts ]
+
+    tianos.repository.orders.has.products:
+        class: Dummy
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments: [ Bundle\TicketBundle\Entity\OrdersHasProducts ]
+
+    tianos.printer:
+        class: Bundle\TicketBundle\Services\Escpos\Printer
+        arguments: [ ]
+        tags:
+            - { name: tianos.printer, alias: tianos.printer }

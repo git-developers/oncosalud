@@ -1,0 +1,311 @@
+backend_orders_index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: tianos.backend.controller.orders:indexAction
+        _tianos:
+            action: index
+            section: admin
+            permission: true
+            template: GridBundle::index.html.twig
+            roles_granted:
+                - ROLE_TICKET_VIEW
+            vars:
+                subheader: sylius.ui.manage_your_ticket_catalog
+                icon: cube
+                body_css: grid-body-css
+                serialize_group_name: crud
+            grid:
+                icon: file-text
+                box_class: primary
+                title: Gestionar pedidos
+                modal:
+                    create:
+                        title: Crear pedido
+                        size: modal-lg
+                    edit:
+                        title: Editar pedido
+                        size: modal-
+                    view:
+                        title: Ver pedido
+                        size: modal-lg
+                    payment_history:
+                        title: Historial de pagos
+                        size: modal-lg
+                    change_password:
+                        title: Cambiar password
+                data_table:
+                    route:
+                        info: backend_orders_info
+                        view: backend_orders_view
+                        create: backend_orders_create
+                        edit: backend_orders_edit
+                        #delete: backend_orders_delete
+                    table_button:
+                        #- ticket_edit
+                        #- edit
+                        #- delete
+                    table_button_header:
+                        #- create
+                        - info
+                    table_option:
+                        pageLength: 50
+                    row_call_back:
+                        - key: id
+                          value: aData.id
+                        - key: data-id
+                          value: aData.id
+                        - key: class
+                          value: "'alert'"
+                    columns:
+                        - obj: " '<span class=\"badge bg-light-blue-active\">' + obj.id + '</span>' "
+                          defs:
+                              targets: 0
+                              searchable: 1
+                              sorting: 1
+                              orderable: 1
+                              type: num
+                              width: 4%
+                              title: '#'
+                              className: modal-view text-center
+                        - obj: " '<span class=\"label bg-purple fontsize-12\">' + obj.code + '</span>' "
+                          defs:
+                              targets: 1
+                              searchable: 1
+                              sorting: 1
+                              orderable: 1
+                              type: html
+                              width: 12%
+                              title: '<i class="fa fa-fw fa-qrcode"></i> Code'
+                              className: text-center
+                              filter: 1
+                        - obj: obj.status
+                          options:
+                              property: " if(obj.status == 1){return '<span class=\"label label-warning fontsize-12\">ABIERTO</span>'}
+                              else if(obj.status == 3){return '<span class=\"label label-success fontsize-12\">COMPLETADO</span>'}
+                              else if(obj.status == 5){return '<span class=\"label label-danger fontsize-12\">ANULADO</span>'} "
+                          defs:
+                              targets: 2
+                              orderable: 1
+                              sorting: 1
+                              title: Status
+                              width: 10%
+                              className: modal-edit text-center
+                              filter: 1
+                        - obj: obj.point_of_sale
+                          options:
+                              property: " return (obj.client) ? obj.client.name_box : '<span class=\"badge bg-red\">No cliente</span>' "
+                          defs:
+                              targets: 3
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-user"></i> Cliente'
+                              className: text-center
+                              filter: 1
+                        - obj: obj.point_of_sale
+                          options:
+                              property: " return (obj.point_of_sale) ? obj.point_of_sale.name : '' "
+                          defs:
+                              targets: 4
+                              orderable: 1
+                              sorting: 1
+                              title: '<i class="fa fa-fw fa-map-marker"></i> Punto de venta'
+                              className: text-center
+                              filter: 1
+                        - obj: obj.delivery_date
+                          defs:
+                              targets: 5
+                              title: '<i class="fa fa-fw fa-calendar"></i> Fecha de entrega'
+                              className: text-center
+                        - obj: obj.created_at
+                          defs:
+                              targets: 6
+                              title: '<i class="fa fa-fw fa-calendar"></i> Creado'
+                              className: text-center
+            form:
+                type: Bundle\TicketBundle\Form\Type\OrdersType
+            repository:
+                service: tianos.repository.orders
+                method: findAll
+                arguments: [$ordersId]
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_create:
+    path: /create
+    methods: [GET, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:createAction
+        _tianos:
+            action: create
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            tree:
+                icon: file-text-o
+                box_class: primary
+                title: Gestionar xxx
+                main_div: box-main-div
+                main_ul: box-main-ul
+                child_ul: box-child-ul
+                li_span: li-span
+            entity: Bundle\TicketBundle\Entity\Orders
+            template: TicketBundle:Orders/Grid:create.html.twig
+            form:
+                type: Bundle\TicketBundle\Form\Type\OrdersType
+            repository:
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_edit:
+    path: /edit
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:editAction
+        _tianos:
+            action: edit
+            template: TicketBundle:Orders/Grid:edit.html.twig
+            roles_granted:
+                - ROLE_TICKET_EDIT
+            form:
+                type: Bundle\TicketBundle\Form\Type\OrdersStatusType
+            repository:
+                service: tianos.repository.orders
+                method: find
+                arguments: [$userId]
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_add_client:
+    path: /add-cliente
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:addClienteAction
+        _tianos:
+            action: create
+            template: TicketBundle:Orders/Modal/Client:data.html.twig
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            entity: Bundle\TicketBundle\Entity\Client
+            form:
+                type: Bundle\TicketBundle\Form\Type\ClientType
+            repository:
+                service: tianos.repository.user
+                method: findAllClient
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_add_pdv:
+    path: /add-pdv
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:addPdvAction
+        _tianos:
+            action: create
+            template: TicketBundle:Orders/Modal/PointOfSale:data.html.twig
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            entity: Bundle\TicketBundle\Entity\PointOfSale
+            form:
+                type: Bundle\TicketBundle\Form\Type\PointOfSaleType
+            repository:
+                service: tianos.repository.pointofsale
+                method: findAll
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_increment_item:
+    path: /increment-item
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:incrementDecrementItemAction
+        _tianos:
+            action: create
+            template: TicketBundle:Orders/Grid/Box:table_product.html.twig
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            tree:
+                icon: file-text-o
+                box_class: primary
+                title: Gestionar product
+                main_div: box-main-div
+                main_ul: box-main-ul
+                child_ul: box-child-ul
+                li_span: li-span
+            entity: Bundle\ProductBundle\Entity\Product
+            form:
+                type: Bundle\ProductBundle\Form\Type\ProductType
+            repository:
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_decrement_item:
+    path: /decrement-item
+    methods: [PUT, POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:incrementDecrementItemAction
+        _tianos:
+            action: create
+            template: TicketBundle:Orders/Grid/Box:table_product.html.twig
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            tree:
+                icon: file-text-o
+                box_class: primary
+                title: Gestionar servicios
+                main_div: box-main-div
+                main_ul: box-main-ul
+                child_ul: box-child-ul
+                li_span: li-span
+            entity: Bundle\ProductBundle\Entity\Product
+            form:
+                type: Bundle\ProductBundle\Form\Type\ProductType
+            repository:
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_remove_all_item:
+    path: /remove-all-item
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:removeAllItemAction
+        _tianos:
+            action: create
+            template: TicketBundle:Orders/Grid/Box:table_product.html.twig
+            vars:
+                body_css: grid-body-css
+                serialize_group_name: crud
+            entity: Bundle\TicketBundle\Entity\Services
+            form:
+                type: Bundle\TicketBundle\Form\Type\ServicesType
+            repository:
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_view:
+    path: /view
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:viewAction
+        _tianos:
+            action: view
+            template: TicketBundle:Orders/Informative:view.html.twig
+            repository:
+                service: tianos.repository.orders
+                method: find
+                arguments: [$ordersId]
+                vars:
+                    serialize_group_name: orders
+
+backend_orders_info:
+    path: /info
+    methods: [POST]
+    defaults:
+        _controller: tianos.backend.controller.orders:infoAction
+        _tianos:
+            action: info
+            template: TicketBundle:Orders/Informative:info.html.twig

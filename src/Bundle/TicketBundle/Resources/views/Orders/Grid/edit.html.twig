@@ -1,0 +1,50 @@
+{% extends 'GridBundle::Template/crud_modal_content.html.twig' %}
+
+{% block crud_modal_content %}
+
+    {% if id is defined %}
+        <input type="hidden" value="{{ id }}" name="id">
+    {% endif %}
+
+    {{ form_widget(form._token) }}
+    {{ form_widget(form.status) }}
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div class="dropdown">
+                <button class="btn bg-yellow-active btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="selected">Opciones</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-status btn-block">
+                    <li>
+                        <a
+                            href="#"
+                            class="text-center"
+                            data-value="{{ constant('Bundle\\TicketBundle\\Entity\\Orders::STATUS_VOIDED') }}">
+                            Anular Pedido
+                        </a>
+                        <a
+                            href="#"
+                            class="text-center"
+                            data-value="{{ constant('Bundle\\TicketBundle\\Entity\\Orders::STATUS_COMPLETED') }}">
+                            Completar Pedido
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $(".dropdown-status a").click(function() {
+            $("span.selected").text($(this).text().trim());
+            $("select[name='{{ form.status.vars.full_name }}']").val($(this).data("value"));
+        });
+
+    </script>
+
+{% endblock %}

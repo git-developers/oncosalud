@@ -1,0 +1,30 @@
+services:
+
+    sylius.form.type.admin_user:
+        class: Bundle\UserBundle\Form\Type\UserType
+        arguments: [ "%sylius.model.admin_user.class%" ]
+        tags:
+            - { name: sylius.form.type.admin_user, alias: sylius.form.type.admin_user }
+
+    Bundle\CoreBundle\DataFixtures\ORM\Load_2_RoleData:
+        arguments: [ '%application_url%' ]
+        tags: [doctrine.fixture.orm]
+
+    Bundle\CoreBundle\DataFixtures\ORM\Load_3_ProfileData:
+        arguments: [ '%application_url%' ]
+        tags: [doctrine.fixture.orm]
+
+    Bundle\CoreBundle\DataFixtures\ORM\Load_4_UserData:
+        arguments: [ '%application_url%' ]
+        tags: [doctrine.fixture.orm]
+
+    tianos.core.controller.default:
+        class: Bundle\CoreBundle\Controller\DefaultController
+        tags:
+            - { name: tianos.core.controller.default, alias: tianos.core.controller.default }
+
+    twig.extension.common:
+         class: Bundle\CoreBundle\Twig\Extension\CommonExtension
+         public: false
+         tags:
+             - { name: twig.extension }
